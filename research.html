@@ -3,37 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research — USD Perception & Robotics Group</title>
+<title>Research — Perception & Robotics Group, USD</title>
 <meta name="description" content="Research thrusts of the USD Perception and Robotics Group: SLAM, aerial robotics, legged locomotion, robot perception, and field robotics.">
-<meta name="theme-color" content="#060c1a">
-<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<meta name="theme-color" content="#faf8f5">
+<link rel="icon" type="image/png" href="assets/img/favicon-dark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="grain" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="container">
     <nav class="nav" aria-label="Primary">
       <a class="brand" href="index.html" aria-label="USD Perception and Robotics Group home">
         <img src="assets/img/logo-white.png" alt="" width="640" height="640">
-        <span class="brand-text"><b>Perception & Robotics</b><span>University of San Diego</span></span>
+        <span class="brand-text"><b>Perception & Robotics Group</b><span>University of San Diego</span></span>
       </a>
       <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="research.html">Research</a>
-        <a href="people.html">People</a>
-        <a href="publications.html">Publications</a>
-        <a href="apply.html">Apply</a>
+        <a href="news.html">News</a>
+        <div class="nav-item">
+          <button type="button" aria-expanded="false">Research <svg class="drop-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown">
+            <a href="research.html">Current Research</a>
+            <a href="software.html">Tutorials / Software / Datasets</a>
+            <a href="publications.html">Publications</a>
+            <a href="facilities.html">Research Facilities</a>
+          </div>
+        </div>
+        <a href="teaching.html">Teaching</a>
+        <a href="media.html">Media</a>
+        <a href="openings.html">Openings</a>
+        <a href="seminar.html"><b>PRG</b> Seminar</a>
       </div>
-      <div class="nav-cta">
-        <a class="btn btn--sm" href="apply.html">Apply</a>
-        <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
-      </div>
+      <a class="btn btn--accent btn--sm nav-cta-btn" href="apply.html">Apply</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
     </nav>
   </div>
 </header>
@@ -42,13 +48,9 @@
 
   <section class="page-hero">
     <div class="container">
-      <p class="eyebrow">Research</p>
+      <p class="eyebrow">Current Research</p>
       <h1>Five thrusts, one question.</h1>
-      <p>
-        How does a machine build a trustworthy estimate of the world — and then act on it
-        without breaking? Each thrust below is a long-horizon program with its own platforms,
-        students, and field sites.
-      </p>
+      <p>How does a machine build a trustworthy estimate of the world — and then act on it without breaking? Each thrust below is a long-horizon program with its own platforms, students, and field sites.</p>
     </div>
   </section>
 
@@ -58,7 +60,7 @@
     </div>
   </section>
 
-  <section class="section section--raised">
+  <section class="section section--soft">
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">How we work</p>
@@ -71,17 +73,17 @@
           <h3>Probabilistic estimation</h3>
           <p>Factor graphs, Kalman and particle filters, robust cost functions, and consistency analysis for multi-sensor fusion.</p>
         </article>
-        <article class="card reveal" data-delay="1">
+        <article class="card reveal">
           <div class="card-icon" data-icon="eye"></div>
           <h3>3D vision</h3>
           <p>Multi-view geometry, structure from motion, dense depth, and learned correspondence for metric reconstruction.</p>
         </article>
-        <article class="card reveal" data-delay="2">
+        <article class="card reveal">
           <div class="card-icon" data-icon="chip"></div>
           <h3>Learning for robots</h3>
           <p>Self-supervised representation learning, sim-to-real transfer, and inference that respects a power and latency budget.</p>
         </article>
-        <article class="card reveal" data-delay="3">
+        <article class="card reveal">
           <div class="card-icon" data-icon="bot"></div>
           <h3>Hardware & fieldcraft</h3>
           <p>Calibration, time synchronization, mechanical integration, and the unglamorous engineering that makes results real.</p>
@@ -97,8 +99,8 @@
         <p class="eyebrow">Collaborate</p>
         <h2>Working on a hard perception problem?</h2>
         <p>We partner with labs, agencies, and companies on problems where the sensor is bad, the environment is unstructured, and the deadline is real.</p>
-        <div class="hero-actions">
-          <a class="btn btn--lg" href="mailto:prg@sandiego.edu">Start a conversation</a>
+        <div class="hero-actions" style="justify-content:center">
+          <a class="btn btn--accent btn--lg" href="mailto:prg@sandiego.edu">Start a conversation</a>
           <a class="btn btn--ghost btn--lg" href="people.html">Meet the group</a>
         </div>
       </div>
@@ -112,9 +114,9 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <img class="usd-mark" src="assets/img/usd-logo-white.png" alt="University of San Diego" width="234" height="210" loading="lazy" decoding="async">
-                <a class="brand" href="index.html">
-          <img src="assets/img/logo-white.png" alt="" width="640" height="640">
-          <span class="brand-text"><b>Perception & Robotics</b><span>University of San Diego</span></span>
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="640" height="640">
+          <span class="brand-text"><b>Perception & Robotics Group</b><span>University of San Diego</span></span>
         </a>
         <p>A research group in the Department of Computer Science studying perception, estimation, and autonomy for robots that leave the lab.</p>
         <div class="social-row">
@@ -125,10 +127,12 @@
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
+        <a href="news.html">News</a>
         <a href="research.html">Research</a>
         <a href="people.html">People</a>
         <a href="publications.html">Publications</a>
-        <a href="apply.html">Join the group</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="seminar.html">PRG Seminar</a>
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
@@ -144,7 +148,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Perception & Robotics Group · University of San Diego</span>
+      <span>&copy; <span id="year">2026</span> Perception & Robotics Group &middot; University of San Diego &middot; Est. <span data-site="founded">2026</span></span>
       <span><a href="https://github.com/USD-PRG/usd-prg.github.io" target="_blank" rel="noopener">Source on GitHub</a></span>
     </div>
   </div>

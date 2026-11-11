@@ -67,9 +67,16 @@ await send("Page.enable");
 
 const pages = [
   { url: "/", expect: ["research-grid", "news-list"] },
+  { url: "/news.html", expect: ["news-list"] },
   { url: "/research.html", expect: ["thrusts"] },
-  { url: "/people.html", expect: ["people-list"] },
+  { url: "/software.html", expect: ["tools-list"] },
   { url: "/publications.html", expect: ["pub-list", "pub-count"] },
+  { url: "/facilities.html", expect: ["facilities-list"] },
+  { url: "/teaching.html", expect: ["courses-list"] },
+  { url: "/media.html", expect: ["media-list"] },
+  { url: "/openings.html", expect: ["openings-list"] },
+  { url: "/seminar.html", expect: ["seminar-list"] },
+  { url: "/people.html", expect: ["people-list"] },
   { url: "/apply.html", expect: ["apply-form"] },
   { url: "/404.html", expect: [] },
 ];
@@ -78,7 +85,7 @@ const results = [];
 for (const p of pages) {
   logs = [];
   await send("Page.navigate", { url: BASE + p.url });
-  await sleep(1400);
+  await sleep(1200);
   const probe = await send("Runtime.evaluate", {
     expression: `(() => {
       const out = { title: document.title };
@@ -90,16 +97,9 @@ for (const p of pages) {
       out.h1 = (document.querySelector('h1')||{}).textContent?.trim().slice(0,60) || null;
       out.brokenImgs = [...document.images].filter(i => !i.complete || i.naturalWidth === 0).map(i => i.getAttribute('src'));
       out.imgs = document.images.length;
-      const cs = getComputedStyle(document.body);
-      out.bodyBg = cs.backgroundColor;
-      const hero = document.querySelector('.hero-art img');
-      out.heroArtLoaded = hero ? hero.naturalWidth : null;
-      const brand = document.querySelector('.brand img');
-      out.brandLoaded = brand ? brand.naturalWidth : null;
-      out.navLinks = [...document.querySelectorAll('.nav-links a')].map(a=>a.textContent.trim());
+      out.bodyBg = getComputedStyle(document.body).backgroundColor;
       out.active = document.querySelector('.nav-links a[aria-current]')?.textContent?.trim() || null;
-      out.docHeight = document.documentElement.scrollHeight;
-      out.overflowX = document.documentElement.scrollWidth > window.innerWidth + 1;
+      out.navItems = document.querySelectorAll('.nav-links > a, .nav-links .nav-item button').length;
       return out;
     })()`,
     returnByValue: true,
@@ -110,10 +110,8 @@ for (const p of pages) {
 for (const r of results) {
   console.log("\n===", r.page, "===");
   console.log("title:", r.title);
-  console.log("h1:", r.h1, "| nav:", r.navLinks.join(","), "| active:", r.active);
-  console.log("rendered:", JSON.stringify(r.counts), "| images:", r.imgs, "broken:", JSON.stringify(r.brokenImgs));
-  console.log("brand:", r.brandLoaded, "heroArt:", r.heroArtLoaded, "bodyBg:", r.bodyBg);
-  console.log("height:", r.docHeight, "hOverflow:", r.overflowX);
+  console.log("h1:", r.h1, "| active:", r.active, "| navItems:", r.navItems);
+  console.log("rendered:", JSON.stringify(r.counts), "| images:", r.imgs, "broken:", JSON.stringify(r.brokenImgs), "| bodyBg:", r.bodyBg);
   if (r.logs.length) console.log("LOGS:", r.logs.join("\n      "));
   else console.log("logs: clean");
 }

@@ -4,10 +4,12 @@
 (function () {
   "use strict";
 
-  /* ------------------------------------------------------------- icons --- */
+  /* ------------------------------------------------------------ icons --- */
   const ICONS = {
     arrow:
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+    chevron:
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
     github:
       '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-2.15c-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.8 1.08.8 2.18v3.23c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>',
     linkedin:
@@ -32,6 +34,8 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M8.5 13h.01M15.5 13h.01M9.5 16.5h5"/></svg>',
     drone:
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="5.5" r="2.5"/><circle cx="18.5" cy="5.5" r="2.5"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/><path d="m7.5 7.5 9 9M16.5 7.5l-9 9"/><rect x="10" y="10" width="4" height="4" rx="1"/></svg>',
+    play:
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 6 3.5-6 3.5v-7Z"/></svg>',
   };
 
   const $ = (sel, root) => (root || document).querySelector(sel);
@@ -41,51 +45,66 @@
     "&": "&" + "amp;",
     "<": "&" + "lt;",
     ">": "&" + "gt;",
-    "\u0022": "&" + "quot;",
-    "\u0027": "&" + "#39;",
+    '"': "&" + "quot;",
+    "'": "&" + "#39;",
   };
-
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ESC_MAP[c]);
 
-  /* --------------------------------------------------------------- nav --- */
+  /* -------------------------------------------------------------- nav --- */
   function initNav() {
-    const header = $(".site-header");
     const nav = $(".nav");
     const toggle = $(".nav-toggle");
 
-    const onScroll = () => {
-      if (!header) return;
-      header.classList.toggle("is-stuck", window.scrollY > 12);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
     if (toggle && nav) {
+      const links = $(".nav-links", nav);
       toggle.addEventListener("click", () => {
-        const open = nav.classList.toggle("is-open");
+        const open = links.classList.toggle("is-open");
         toggle.setAttribute("aria-expanded", String(open));
       });
-      $$(".nav-links a").forEach((a) => {
+      $$(".nav-links a", nav).forEach((a) => {
         a.addEventListener("click", () => {
-          nav.classList.remove("is-open");
+          links.classList.remove("is-open");
           toggle.setAttribute("aria-expanded", "false");
         });
       });
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          nav.classList.remove("is-open");
+          links.classList.remove("is-open");
           toggle.setAttribute("aria-expanded", "false");
         }
       });
     }
 
-    // mark the current page
+    // Desktop/touch dropdown toggles for the Research grouping.
+    $$(".nav-item", nav || document).forEach((item) => {
+      const btn = $(":scope > button", item);
+      if (!btn) return;
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = item.classList.toggle("is-open");
+        btn.setAttribute("aria-expanded", String(open));
+      });
+    });
+    document.addEventListener("click", () => {
+      $$(".nav-item", nav || document).forEach((item) => {
+        item.classList.remove("is-open");
+        const btn = $(":scope > button", item);
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Mark the current page (including the Research dropdown parent).
     const path = window.location.pathname.split("/").pop() || "index.html";
-    $$(".nav-links a").forEach((a) => {
+    $$(".nav-links a", nav || document).forEach((a) => {
       const href = a.getAttribute("href");
       if (!href) return;
       if (href === path || (path === "" && href === "index.html")) {
         a.setAttribute("aria-current", "page");
+        const item = a.closest(".nav-item");
+        if (item) {
+          const btn = $(":scope > button", item);
+          if (btn) btn.setAttribute("aria-current", "page");
+        }
       }
     });
   }
@@ -94,12 +113,10 @@
   function initReveal() {
     const items = $$(".reveal");
     if (!items.length) return;
-
     if (!("IntersectionObserver" in window)) {
       items.forEach((el) => el.classList.add("is-in"));
       return;
     }
-
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -111,67 +128,56 @@
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
     );
-
     items.forEach((el) => io.observe(el));
   }
 
-  /* ------------------------------------------------------------ payload --- */
+  /* ----------------------------------------------------------- payload --- */
   function fillSiteText() {
     $$("[data-site]").forEach((el) => {
       const key = el.getAttribute("data-site");
       if (typeof SITE !== "undefined" && SITE[key] != null) {
-        if (el.tagName === "A") el.setAttribute("href", el.getAttribute("href") || SITE[key]);
+        if (el.tagName === "A") el.setAttribute("href", SITE[key]);
         else el.textContent = SITE[key];
       }
     });
-
     $$("[data-email]").forEach((el) => {
       const email = (typeof SITE !== "undefined" && SITE.email) || "";
       if (el.tagName === "A") el.href = "mailto:" + email;
       else el.textContent = email;
     });
-
     const yearEl = $("#year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 
   /* ----------------------------------------------------------- research --- */
-  function researchCard(item, delay) {
+  function researchCard(item) {
     return (
-      '<a class="r-card reveal" href="research.html#' + esc(item.id) + '" data-delay="' + delay + '">' +
+      '<a class="r-card reveal" href="research.html#' + esc(item.id) + '">' +
         '<div class="r-card-media">' +
-          '<img src="' + esc(item.image) + '" alt="' + esc(item.title) + ' abstract visualisation" loading="lazy" decoding="async">' +
-          '<span class="r-card-num">' + esc(item.number) + '</span>' +
-        '</div>' +
+          '<img src="' + esc(item.image) + '" alt="' + esc(item.title) + ' visualisation" loading="lazy" decoding="async">' +
+          '<span class="r-card-num">' + esc(item.number) + "</span>" +
+        "</div>" +
         '<div class="r-card-body">' +
-          '<h3>' + esc(item.title) + '</h3>' +
-          '<p>' + esc(item.short) + '</p>' +
-          '<span class="link-arrow">Explore ' + ICONS.arrow + '</span>' +
-        '</div>' +
-      '</a>'
+          "<h3>" + esc(item.title) + "</h3>" +
+          "<p>" + esc(item.short) + "</p>" +
+          '<span class="link-arrow">Explore ' + ICONS.arrow + "</span>" +
+        "</div>" +
+      "</a>"
     );
   }
 
   function renderResearchGrid() {
     const host = $("#research-grid");
     if (!host || typeof RESEARCH === "undefined") return;
-    host.innerHTML = RESEARCH.slice(0, 5)
-      .map((item, i) => researchCard(item, (i % 3) + 1))
-      .join("");
+    host.innerHTML = RESEARCH.slice(0, 5).map(researchCard).join("");
   }
 
   function renderThrusts() {
     const host = $("#thrusts");
     if (!host || typeof RESEARCH === "undefined") return;
-
     host.innerHTML = RESEARCH.map((item) => {
-      const bullets = item.bullets
-        .map((b) => "<li>" + esc(b) + "</li>")
-        .join("");
-      const tags = item.tags
-        .map((t) => '<span class="tag">' + esc(t) + "</span>")
-        .join("");
-
+      const bullets = item.bullets.map((b) => "<li>" + esc(b) + "</li>").join("");
+      const tags = item.tags.map((t) => '<span class="tag">' + esc(t) + "</span>").join("");
       return (
         '<section class="thrust reveal" id="' + esc(item.id) + '">' +
           '<div class="thrust-body">' +
@@ -179,7 +185,7 @@
             "<h2>" + esc(item.title) + "</h2>" +
             "<p>" + esc(item.body) + "</p>" +
             '<ul class="tick-list">' + bullets + "</ul>" +
-            '<div class="pub-tags" style="margin-top:1.35rem">' + tags + "</div>" +
+            '<div class="pub-tags">' + tags + "</div>" +
           "</div>" +
           '<div class="thrust-media">' +
             '<img src="' + esc(item.image) + '" alt="' + esc(item.title) + ' visualisation" loading="lazy" decoding="async">' +
@@ -200,12 +206,11 @@
   };
   const GROUP_ORDER = ["faculty", "postdoc", "phd", "masters", "undergrad", "alumni"];
   const AVATAR_TINTS = [
-    "linear-gradient(145deg,#e9c98d,#c9a86a)",
-    "linear-gradient(145deg,#8fd3ff,#4fa8dd)",
-    "linear-gradient(145deg,#b9aaff,#8272e0)",
-    "linear-gradient(145deg,#9df0cd,#5fc4a0)",
-    "linear-gradient(145deg,#ffb3a8,#e07f72)",
-    "linear-gradient(145deg,#cfe0ff,#8fb2e8)",
+    "linear-gradient(135deg,#c96f4a,#a34a28)",
+    "linear-gradient(135deg,#5b8c86,#3f6f68)",
+    "linear-gradient(135deg,#8a7dc0,#6b5e8f)",
+    "linear-gradient(135deg,#c3a05a,#a9823a)",
+    "linear-gradient(135deg,#b7a79b,#776d66)",
   ];
 
   function initials(name) {
@@ -218,32 +223,21 @@
   function personLinks(links) {
     if (!links) return "";
     const out = [];
-    if (links.email) {
-      out.push('<a class="icon-link" href="mailto:' + esc(links.email) + '" aria-label="Email" title="Email">' + ICONS.mail + "</a>");
-    }
-    if (links.github) {
-      out.push('<a class="icon-link" href="' + esc(links.github) + '" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">' + ICONS.github + "</a>");
-    }
-    if (links.scholar) {
-      out.push('<a class="icon-link" href="' + esc(links.scholar) + '" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">' + ICONS.scholar + "</a>");
-    }
-    if (links.linkedin) {
-      out.push('<a class="icon-link" href="' + esc(links.linkedin) + '" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">' + ICONS.linkedin + "</a>");
-    }
-    if (links.website) {
-      out.push('<a class="icon-link" href="' + esc(links.website) + '" aria-label="Website" title="Website" target="_blank" rel="noopener">' + ICONS.globe + "</a>");
-    }
+    if (links.email) out.push('<a class="icon-link" href="mailto:' + esc(links.email) + '" aria-label="Email" title="Email">' + ICONS.mail + "</a>");
+    if (links.github) out.push('<a class="icon-link" href="' + esc(links.github) + '" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">' + ICONS.github + "</a>");
+    if (links.scholar) out.push('<a class="icon-link" href="' + esc(links.scholar) + '" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">' + ICONS.scholar + "</a>");
+    if (links.linkedin) out.push('<a class="icon-link" href="' + esc(links.linkedin) + '" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">' + ICONS.linkedin + "</a>");
+    if (links.website) out.push('<a class="icon-link" href="' + esc(links.website) + '" aria-label="Website" title="Website" target="_blank" rel="noopener">' + ICONS.globe + "</a>");
     return out.length ? '<div class="person-links">' + out.join("") + "</div>" : "";
   }
 
-  function personCard(p, index, extraClass) {
+  function personCard(p, index) {
     const tint = AVATAR_TINTS[index % AVATAR_TINTS.length];
     const avatar = p.avatar
       ? '<img src="' + esc(p.avatar) + '" alt="' + esc(p.name) + '" loading="lazy" decoding="async">'
       : esc(initials(p.name));
-
     return (
-      '<article class="person ' + (extraClass || "") + '">' +
+      '<article class="person">' +
         '<div class="avatar" style="background:' + tint + '">' + avatar + "</div>" +
         '<div class="person-body">' +
           "<h3>" + esc(p.name) + "</h3>" +
@@ -265,7 +259,7 @@
     if (!people.length && !open.length) {
       host.innerHTML =
         '<div class="empty-state"><strong>Roster coming soon</strong>' +
-        "<p>Our founding members are joining for the 2026–27 academic year. In the meantime, we are actively recruiting — see the open positions below.</p></div>";
+        "<p>Our founding members are joining for the 2026–27 academic year.</p></div>";
       return;
     }
 
@@ -273,9 +267,8 @@
     let counter = 0;
 
     GROUP_ORDER.forEach((group) => {
-      const members = people.filter((p) => (p.group || "phd") === group);
+      const members = people.filter((p) => (p.group || "faculty") === group);
       if (!members.length) return;
-
       html +=
         '<section class="people-group">' +
           '<div class="people-group-head">' +
@@ -283,45 +276,29 @@
             "<span>" + members.length + " " + (members.length === 1 ? "member" : "members") + "</span>" +
           "</div>" +
           '<div class="grid grid-3">' +
-            members
-              .map((p, i) => personCard(p, counter++, p.featured || group === "faculty" ? "person--director" : ""))
-              .join("") +
+            members.map((p, i) => personCard(p, counter++)).join("") +
           "</div>" +
         "</section>";
     });
-
-    const ungrouped = people.filter((p) => GROUP_ORDER.indexOf(p.group || "phd") === -1);
-    if (ungrouped.length) {
-      html +=
-        '<section class="people-group">' +
-          '<div class="people-group-head"><h2>Affiliates</h2></div>' +
-          '<div class="grid grid-3">' +
-            ungrouped.map((p, i) => personCard(p, counter++, "")).join("") +
-          "</div>" +
-        "</section>";
-    }
 
     if (open.length) {
       html +=
         '<section class="people-group">' +
           '<div class="people-group-head">' +
             "<h2>Open Positions</h2>" +
-            '<span><a class="link-arrow" href="apply.html">Apply ' + ICONS.arrow + "</a></span>" +
+            '<span><a class="link-arrow" href="openings.html">See openings ' + ICONS.arrow + "</a></span>" +
           "</div>" +
           '<div class="grid grid-3">' +
-            open
-              .map(
-                (o) =>
-                  '<article class="person person--open">' +
-                    '<div class="avatar">+</div>' +
-                    '<div class="person-body">' +
-                      "<h3>" + esc(o.role) + "</h3>" +
-                      '<p class="person-note">' + esc(o.note) + "</p>" +
-                      '<div class="person-links"><a class="mini-link" href="apply.html">Apply →</a></div>' +
-                    "</div>" +
-                  "</article>"
-              )
-              .join("") +
+            open.map((o) =>
+              '<article class="person">' +
+                '<div class="avatar" style="background:var(--bg-soft);color:var(--accent)">+</div>' +
+                '<div class="person-body">' +
+                  "<h3>" + esc(o.role) + "</h3>" +
+                  '<p class="person-note">' + esc(o.note) + "</p>" +
+                  '<div class="person-links"><a class="mini-link" href="apply.html">Apply →</a></div>' +
+                "</div>" +
+              "</article>"
+            ).join("") +
           "</div>" +
         "</section>";
     }
@@ -333,43 +310,36 @@
   function renderNews() {
     const host = $("#news-list");
     if (!host || typeof NEWS === "undefined") return;
-    if (!NEWS.length) {
+    const list = NEWS;
+    if (!list.length) {
       host.innerHTML = '<div class="empty-state"><strong>No announcements yet</strong><p>Check back soon.</p></div>';
       return;
     }
-    host.innerHTML = NEWS.map(
-      (n) =>
-        '<article class="news-item">' +
-          '<p class="news-date">' + esc(n.date) + "</p>" +
-          "<div><h3>" + esc(n.title) + "</h3>" +
-          (n.body ? "<p>" + esc(n.body) + "</p>" : "") +
-          "</div>" +
-        "</article>"
+    host.innerHTML = list.map((n) =>
+      '<article class="news-item">' +
+        '<p class="news-date">' + esc(n.date) + "</p>" +
+        "<div><h3>" + esc(n.title) + "</h3>" +
+        (n.body ? "<p>" + esc(n.body) + "</p>" : "") +
+        "</div>" +
+      "</article>"
     ).join("");
   }
 
-  /* ----------------------------------------------------- publications --- */
+  /* ------------------------------------------------------ publications --- */
   function pubHtml(p, index) {
     const authors = (p.authors || [])
       .map((a) => (a.charAt(0) === "*" ? '<span class="me">' + esc(a.slice(1)) + "</span>" : esc(a)))
       .join(", ");
-
     const links = p.links || {};
     const linkLabels = { pdf: "PDF", arxiv: "arXiv", code: "Code", video: "Video", project: "Project", slides: "Slides" };
     const linkHtml = Object.keys(linkLabels)
       .filter((k) => links[k])
-      .map(
-        (k) =>
-          '<a class="mini-link" href="' + esc(links[k]) + '" target="_blank" rel="noopener">' + linkLabels[k] + "</a>"
-      )
+      .map((k) => '<a class="mini-link" href="' + esc(links[k]) + '" target="_blank" rel="noopener">' + linkLabels[k] + "</a>")
       .join("");
-
     const bib = p.bibtex
       ? '<button class="mini-link" type="button" data-bibtex="' + esc(p.bibtex) + '">BibTeX</button>'
       : "";
-
     const tags = (p.tags || []).map((t) => '<span class="tag">' + esc(t) + "</span>").join("");
-
     return (
       '<article class="pub" data-title="' + esc((p.title || "").toLowerCase()) +
         '" data-tags="' + esc((p.tags || []).join("|").toLowerCase()) + '">' +
@@ -394,7 +364,6 @@
   function renderPublications() {
     const host = $("#pub-list");
     if (!host) return;
-
     const pubs = typeof PUBLICATIONS !== "undefined" ? PUBLICATIONS : [];
     const chipsHost = $("#pub-chips");
     const search = $("#pub-search");
@@ -405,7 +374,7 @@
       host.innerHTML =
         '<div class="empty-state"><strong>Publications coming soon</strong>' +
         "<p>We are a newly founded group — our first papers are in preparation. This page will fill up as work is published.</p>" +
-        '<a class="btn btn--ghost btn--sm" href="research.html">See what we work on ' + ICONS.arrow + "</a></div>";
+        '<a class="btn btn--ghost" href="research.html">See what we work on ' + ICONS.arrow + "</a></div>";
       if (countEl) countEl.textContent = "0 papers";
       if (search) search.closest(".search-field").style.display = "none";
       return;
@@ -422,9 +391,7 @@
           (p.title || "").toLowerCase().includes(q) ||
           (p.authors || []).join(" ").toLowerCase().includes(q) ||
           (p.venue || "").toLowerCase().includes(q);
-        const matchTag =
-          activeTag === "all" ||
-          (p.tags || []).some((t) => t.toLowerCase() === activeTag);
+        const matchTag = activeTag === "all" || (p.tags || []).some((t) => t.toLowerCase() === activeTag);
         return matchQ && matchTag;
       });
 
@@ -434,12 +401,11 @@
         let html = "";
         let currentYear = null;
         let i = 0;
-        filtered.forEach((p, idx) => {
+        filtered.forEach((p) => {
           if (p.year !== currentYear) {
             currentYear = p.year;
-            if (html) html += "";
             html += '<h2 class="pub-year">' + esc(currentYear || "—") + "<small>" +
-              filtered.filter((q2) => q2.year === currentYear).length + " papers</small></h2>";
+              filtered.filter((x) => x.year === currentYear).length + " papers</small></h2>";
             i = 0;
           }
           html += pubHtml(p, i++);
@@ -447,12 +413,9 @@
         host.innerHTML = html;
       }
 
-      if (countEl) {
-        countEl.textContent = filtered.length + (filtered.length === 1 ? " paper" : " papers");
-      }
+      if (countEl) countEl.textContent = filtered.length + (filtered.length === 1 ? " paper" : " papers");
     };
 
-    // tag chips
     if (chipsHost) {
       const tags = [];
       sorted.forEach((p) => (p.tags || []).forEach((t) => {
@@ -461,7 +424,6 @@
       chipsHost.innerHTML =
         '<button class="chip" type="button" aria-pressed="true" data-tag="all">All</button>' +
         tags.map((t) => '<button class="chip" type="button" aria-pressed="false" data-tag="' + esc(t.toLowerCase()) + '">' + esc(t) + "</button>").join("");
-
       chipsHost.addEventListener("click", (e) => {
         const btn = e.target.closest(".chip");
         if (!btn) return;
@@ -473,6 +435,123 @@
 
     if (search) search.addEventListener("input", draw);
     draw();
+  }
+
+  /* ------------------------------------------------------- tools/data --- */
+  const KIND_TINTS = { software: ["Software", "teal"], tutorial: ["Tutorial", "mauve"], dataset: ["Dataset", "gold"], course: ["Course", "accent"] };
+
+  function renderTools() {
+    const host = $("#tools-list");
+    if (!host || typeof TOOLS === "undefined") return;
+    if (!TOOLS.length) {
+      host.innerHTML = '<div class="empty-state"><strong>Coming soon</strong><p>Code, tutorials, and datasets will appear here as they are released.</p></div>';
+      return;
+    }
+    host.innerHTML = TOOLS.map((t) => {
+      const k = KIND_TINTS[t.kind] || ["Resource", "teal"];
+      const links = t.links || {};
+      let linkHtml = "";
+      if (links.github) linkHtml += '<a class="mini-link" href="' + esc(links.github) + '" target="_blank" rel="noopener">GitHub</a>';
+      if (links.project) linkHtml += '<a class="mini-link" href="' + esc(links.project) + '" target="_blank" rel="noopener">Project</a>';
+      if (links.pdf) linkHtml += '<a class="mini-link" href="' + esc(links.pdf) + '" target="_blank" rel="noopener">PDF</a>';
+      return (
+        '<article class="soft-item reveal">' +
+          '<p class="kind">' + esc(k[0]) + "</p>" +
+          "<h3>" + esc(t.title) + "</h3>" +
+          "<p>" + esc(t.desc) + "</p>" +
+          (linkHtml ? '<div class="soft-item-links">' + linkHtml + "</div>" : "") +
+        "</article>"
+      );
+    }).join("");
+  }
+
+  /* -------------------------------------------------------- facilities --- */
+  function renderFacilities() {
+    const host = $("#facilities-list");
+    if (!host || typeof FACILITIES === "undefined") return;
+    host.innerHTML = FACILITIES.map((f, i) => {
+      const tints = ["", "card-icon--teal", "card-icon--mauve", "card-icon--gold"];
+      return (
+        '<article class="card reveal">' +
+          '<div class="card-icon ' + (tints[i % tints.length]) + '" data-icon="' + esc(f.icon) + '"></div>' +
+          "<h3>" + esc(f.title) + "</h3>" +
+          "<p>" + esc(f.desc) + "</p>" +
+        "</article>"
+      );
+    }).join("");
+  }
+
+  /* ---------------------------------------------------------- teaching --- */
+  function renderCourses() {
+    const host = $("#courses-list");
+    if (!host || typeof COURSES === "undefined") return;
+    if (!COURSES.length) {
+      host.innerHTML = '<div class="empty-state"><strong>Courses coming soon</strong><p>The group will list its teaching here.</p></div>';
+      return;
+    }
+    host.innerHTML = COURSES.map((c) =>
+      '<article class="course">' +
+        '<div class="course-code">' + esc(c.code) + (c.term ? "<br><span>" + esc(c.term) + "</span>" : "") + "</div>" +
+        "<div><h3>" + esc(c.title) + "</h3><p>" + esc(c.body) + "</p></div>" +
+      "</article>"
+    ).join("");
+  }
+
+  /* ------------------------------------------------------------- media --- */
+  function renderMedia() {
+    const host = $("#media-list");
+    if (!host || typeof MEDIA === "undefined") return;
+    if (!MEDIA.length) {
+      host.innerHTML = '<div class="empty-state"><strong>No coverage yet</strong><p>Press mentions and features will appear here.</p></div>';
+      return;
+    }
+    host.innerHTML = MEDIA.map((m) => {
+      const hasLink = m.url && m.url !== "#";
+      const inner =
+        '<p class="outlet">' + esc(m.outlet) + "</p>" +
+        "<h3>" + esc(m.title) + "</h3>" +
+        (m.date ? '<p class="mono">' + esc(m.date) + "</p>" : "");
+      if (!hasLink) return '<article class="media-item">' + inner + "</article>";
+      return '<a class="media-item" href="' + esc(m.url) + '" target="_blank" rel="noopener">' + inner + "</a>";
+    }).join("");
+  }
+
+  /* --------------------------------------------------------- openings --- */
+  function renderOpenings() {
+    const host = $("#openings-list");
+    if (!host || typeof OPENINGS === "undefined") return;
+    if (!OPENINGS.length) {
+      host.innerHTML = '<div class="empty-state"><strong>No open positions right now</strong><p>Check back soon.</p></div>';
+      return;
+    }
+    host.innerHTML = OPENINGS.map((o) =>
+      '<article class="soft-item reveal">' +
+        '<p class="kind">' + esc(o.type) + "</p>" +
+        "<h3>" + esc(o.title) + "</h3>" +
+        "<p>" + esc(o.body) + "</p>" +
+        (o.apply ? '<div class="soft-item-links"><a class="mini-link" href="' + esc(o.apply) + '">Apply →</a></div>' : "") +
+      "</article>"
+    ).join("");
+  }
+
+  /* ----------------------------------------------------------- seminar --- */
+  function renderSeminars() {
+    const host = $("#seminar-list");
+    if (!host || typeof SEMINARS === "undefined") return;
+    if (!SEMINARS.length) {
+      host.innerHTML = '<div class="empty-state"><strong>Seminar schedule coming soon</strong><p>The PRG Seminar will be announced here.</p></div>';
+      return;
+    }
+    host.innerHTML = SEMINARS.map((s) =>
+      '<article class="sem">' +
+        '<div class="sem-date">' + esc(s.date) + "</div>" +
+        "<div>" +
+          "<h3>" + esc(s.title) + "</h3>" +
+          '<div class="speaker">' + esc(s.speaker) + (s.affiliation && s.affiliation !== "—" ? ", " + esc(s.affiliation) : "") + "</div>" +
+          (s.abstract ? "<p>" + esc(s.abstract) + "</p>" : "") +
+        "</div>" +
+      "</article>"
+    ).join("");
   }
 
   /* -------------------------------------------------------------- toast --- */
@@ -514,7 +593,6 @@
     if (!form) return;
 
     const status = $("#apply-status");
-
     const setStatus = (message, isError) => {
       if (!status) return;
       status.textContent = message;
@@ -563,7 +641,6 @@
       const subject = "PRG application — " + (get("name") || "New applicant") + " — " + (get("position") || "");
       const body = lines.join("\n");
       const email = (typeof SITE !== "undefined" && SITE.email) || "";
-
       const mailto = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 
       const copyPromise =
@@ -573,14 +650,12 @@
 
       copyPromise.then(() => {
         setStatus(
-          "Your application is ready. We copied it to your clipboard and opened your email client — just hit send. If nothing opened, email " +
-            email + " directly.",
+          "Your application is ready. We copied it to your clipboard and opened your email client — just hit send. If nothing opened, email " + email + " directly.",
           false
         );
         window.location.href = mailto;
       });
 
-      // Show a confirmation panel with a manual fallback for good measure.
       const preview = $("#apply-preview");
       const previewBody = $("#apply-preview-body");
       if (preview && previewBody) {
@@ -589,7 +664,6 @@
       }
     });
 
-    // Pre-select "position" from a ?role= query param (used by People page links)
     const params = new URLSearchParams(window.location.search);
     const role = params.get("role");
     const position = form.querySelector("#position");
@@ -600,7 +674,7 @@
     }
   }
 
-  /* --------------------------------------------------------------- boot --- */
+  /* -------------------------------------------------------------- boot --- */
   function boot() {
     fillSiteText();
     initNav();
@@ -609,6 +683,12 @@
     renderPeople();
     renderNews();
     renderPublications();
+    renderTools();
+    renderFacilities();
+    renderCourses();
+    renderMedia();
+    renderOpenings();
+    renderSeminars();
     initApplyForm();
     initReveal();
 

@@ -3,37 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Apply — USD Perception & Robotics Group</title>
-<meta name="description" content="Apply to join the Perception and Robotics Group at the University of San Diego. Open roles for Ph.D., M.S., and undergraduate researchers.">
-<meta name="theme-color" content="#060c1a">
-<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<title>Apply — Perception & Robotics Group, USD</title>
+<meta name="description" content="Apply to join the Perception and Robotics Group at the University of San Diego.">
+<meta name="theme-color" content="#faf8f5">
+<link rel="icon" type="image/png" href="assets/img/favicon-dark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="grain" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="container">
     <nav class="nav" aria-label="Primary">
       <a class="brand" href="index.html" aria-label="USD Perception and Robotics Group home">
         <img src="assets/img/logo-white.png" alt="" width="640" height="640">
-        <span class="brand-text"><b>Perception & Robotics</b><span>University of San Diego</span></span>
+        <span class="brand-text"><b>Perception & Robotics Group</b><span>University of San Diego</span></span>
       </a>
       <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="research.html">Research</a>
-        <a href="people.html">People</a>
-        <a href="publications.html">Publications</a>
-        <a href="apply.html">Apply</a>
+        <a href="news.html">News</a>
+        <div class="nav-item">
+          <button type="button" aria-expanded="false">Research <svg class="drop-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown">
+            <a href="research.html">Current Research</a>
+            <a href="software.html">Tutorials / Software / Datasets</a>
+            <a href="publications.html">Publications</a>
+            <a href="facilities.html">Research Facilities</a>
+          </div>
+        </div>
+        <a href="teaching.html">Teaching</a>
+        <a href="media.html">Media</a>
+        <a href="openings.html">Openings</a>
+        <a href="seminar.html"><b>PRG</b> Seminar</a>
       </div>
-      <div class="nav-cta">
-        <a class="btn btn--sm" href="apply.html">Apply</a>
-        <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
-      </div>
+      <a class="btn btn--accent btn--sm nav-cta-btn" href="apply.html">Apply</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
     </nav>
   </div>
 </header>
@@ -44,18 +50,12 @@
     <div class="container">
       <p class="eyebrow">Apply</p>
       <h1>Join the group.</h1>
-      <p>
-        We are building our founding cohort for Spring 2027. Review is rolling — there is
-        no deadline pressure, but earlier applications get earlier answers.
-      </p>
+      <p>We are building our founding cohort for Spring 2027. Review is rolling — there is no deadline pressure, but earlier applications get earlier answers.</p>
     </div>
   </section>
-
   <section class="section">
     <div class="container">
       <div class="apply-grid">
-
-        <!-- ------------------------------------------------------- form -->
         <div class="form-panel reveal">
           <form id="apply-form" novalidate>
             <fieldset>
@@ -74,7 +74,7 @@
                 <div class="field">
                   <label for="affiliation">Current affiliation</label>
                   <select id="affiliation" name="affiliation">
-                    <option value="">Select…</option>
+                    <option value="">Select&hellip;</option>
                     <option>USD undergraduate</option>
                     <option>USD graduate student</option>
                     <option>Student at another university</option>
@@ -83,18 +83,17 @@
                 </div>
                 <div class="field">
                   <label for="department">Department / major</label>
-                  <input id="department" name="department" type="text" placeholder="Computer Science, Mathematics, Physics…">
+                  <input id="department" name="department" type="text" placeholder="Computer Science, Mathematics, Physics&hellip;">
                 </div>
               </div>
             </fieldset>
-
             <fieldset>
               <legend>What you want to do</legend>
               <div class="field-row">
                 <div class="field">
                   <label for="position">Position sought <span class="req">*</span></label>
                   <select id="position" name="position" required>
-                    <option value="">Select a position…</option>
+                    <option value="">Select a position&hellip;</option>
                     <option>Ph.D. Researcher</option>
                     <option>M.S. Researcher</option>
                     <option>Undergraduate Research Assistant</option>
@@ -106,7 +105,7 @@
                 <div class="field">
                   <label for="start">Earliest start</label>
                   <select id="start" name="start">
-                    <option value="">Select…</option>
+                    <option value="">Select&hellip;</option>
                     <option>Spring 2027</option>
                     <option>Summer 2027</option>
                     <option>Fall 2027</option>
@@ -114,7 +113,6 @@
                   </select>
                 </div>
               </div>
-
               <div class="field">
                 <label>Research interests <span class="hint">(choose any)</span></label>
                 <div class="check-grid">
@@ -127,7 +125,6 @@
                 </div>
               </div>
             </fieldset>
-
             <fieldset>
               <legend>Links</legend>
               <div class="field-row">
@@ -145,35 +142,27 @@
                 <input id="linkedin" name="linkedin" type="url" placeholder="https://www.linkedin.com/in/you">
               </div>
             </fieldset>
-
             <fieldset>
               <legend>In your own words</legend>
               <div class="field">
                 <label for="background">Relevant background <span class="hint">— courses, projects, hardware, publications</span></label>
-                <textarea id="background" name="background" rows="4" placeholder="Robotics, vision, controls, ROS, embedded systems, relevant coursework, anything you have built…"></textarea>
+                <textarea id="background" name="background" rows="4" placeholder="Robotics, vision, controls, ROS, embedded systems, relevant coursework, anything you have built&hellip;"></textarea>
               </div>
               <div class="field">
                 <label for="statement">Why this group? <span class="req">*</span></label>
                 <textarea id="statement" name="statement" rows="6" required placeholder="What problem do you want to work on, and what do you bring to it? Two short paragraphs is plenty."></textarea>
               </div>
             </fieldset>
-
             <div class="form-actions">
-              <button class="btn btn--lg" type="submit">
-                Submit application
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-              </button>
+              <button class="btn btn--accent btn--lg" type="submit">Submit application</button>
               <button class="btn btn--ghost btn--lg" type="reset">Clear</button>
             </div>
-
             <p class="form-note">
               Submitting opens your email client with a formatted application (and copies it to
               your clipboard). Nothing is stored on this site — everything goes directly to
               <a href="mailto:prg@sandiego.edu">prg@sandiego.edu</a>.
             </p>
-
             <div class="status" id="apply-status" role="status" aria-live="polite"></div>
-
             <div class="preview-panel" id="apply-preview" hidden>
               <p class="eyebrow">Your submission</p>
               <p class="form-note" style="margin-top:0">
@@ -184,28 +173,16 @@
             </div>
           </form>
         </div>
-
-        <!-- ------------------------------------------------------- aside -->
-        <aside class="apply-aside reveal" data-delay="2">
+        <aside class="apply-aside reveal">
           <div class="side-card">
             <p class="eyebrow">Open positions</p>
-            <h2 style="font-size:1.35rem">Spring 2027</h2>
+            <h2 style="font-size:1.15rem">Spring 2027</h2>
             <ul class="role-list">
-              <li>
-                <strong>Faculty Director</strong>
-                <span>Founding director appointment in progress.</span>
-              </li>
-              <li>
-                <strong>Ph.D. & M.S. Researchers</strong>
-                <span>Two funded positions in perception and robot learning.</span>
-              </li>
-              <li>
-                <strong>Undergraduate Research Assistants</strong>
-                <span>Paid semester research assistantships for USD undergraduates.</span>
-              </li>
+              <li><strong>Ph.D. & M.S. Researchers</strong><span>Funded positions in perception and robot learning.</span></li>
+              <li><strong>Undergraduate Research Assistants</strong><span>Paid semester research assistantships.</span></li>
+              <li><strong>Postdoctoral Researcher</strong><span>Perception, estimation, and field autonomy.</span></li>
             </ul>
           </div>
-
           <div class="side-card">
             <p class="eyebrow">Timeline</p>
             <ol class="timeline">
@@ -215,17 +192,11 @@
               <li><b>Offer</b><span>Start date and expectations agreed in writing.</span></li>
             </ol>
           </div>
-
           <div class="side-card side-card--quiet">
             <p class="eyebrow">Questions?</p>
             <p>Email <a href="mailto:prg@sandiego.edu">prg@sandiego.edu</a> or see the FAQ on the <a href="people.html">People</a> page.</p>
-            <div class="social-row" style="margin-top:1rem">
-              <a class="social-btn" href="https://www.linkedin.com/company/usd-prg" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM2.9 9.9h4.16V21H2.9V9.9Zm7.05 0h3.99v1.52h.06a4.38 4.38 0 0 1 3.94-2.16c4.21 0 4.99 2.77 4.99 6.37V21h-4.16v-4.9c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.59V21h-4.16V9.9Z"/></svg></a>
-              <a class="social-btn" href="https://github.com/USD-PRG" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-2.15c-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.8 1.08.8 2.18v3.23c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg></a>
-            </div>
           </div>
         </aside>
-
       </div>
     </div>
   </section>
@@ -237,9 +208,9 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <img class="usd-mark" src="assets/img/usd-logo-white.png" alt="University of San Diego" width="234" height="210" loading="lazy" decoding="async">
-                <a class="brand" href="index.html">
-          <img src="assets/img/logo-white.png" alt="" width="640" height="640">
-          <span class="brand-text"><b>Perception & Robotics</b><span>University of San Diego</span></span>
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="640" height="640">
+          <span class="brand-text"><b>Perception & Robotics Group</b><span>University of San Diego</span></span>
         </a>
         <p>A research group in the Department of Computer Science studying perception, estimation, and autonomy for robots that leave the lab.</p>
         <div class="social-row">
@@ -250,10 +221,12 @@
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
+        <a href="news.html">News</a>
         <a href="research.html">Research</a>
         <a href="people.html">People</a>
         <a href="publications.html">Publications</a>
-        <a href="apply.html">Join the group</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="seminar.html">PRG Seminar</a>
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
@@ -269,7 +242,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Perception & Robotics Group · University of San Diego</span>
+      <span>&copy; <span id="year">2026</span> Perception & Robotics Group &middot; University of San Diego &middot; Est. <span data-site="founded">2026</span></span>
       <span><a href="https://github.com/USD-PRG/usd-prg.github.io" target="_blank" rel="noopener">Source on GitHub</a></span>
     </div>
   </div>

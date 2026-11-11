@@ -123,7 +123,11 @@ const AUDIT = `(() => {
   return out;
 })()`;
 
-const pages = ["/", "/research.html", "/people.html", "/publications.html", "/apply.html", "/404.html"];
+const pages = [
+  "/", "/news.html", "/research.html", "/software.html", "/publications.html",
+  "/facilities.html", "/teaching.html", "/media.html", "/openings.html",
+  "/seminar.html", "/people.html", "/apply.html", "/404.html",
+];
 const widths = [1440, 390];
 
 for (const w of widths) {

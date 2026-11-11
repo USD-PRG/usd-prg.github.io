@@ -5,52 +5,46 @@
    Everything below is plain JavaScript. Add / remove entries, commit, done.
    ========================================================================= */
 
-/* -------------------------------------------------------------- site --- */
+/* ------------------------------------------------------------- site --- */
 const SITE = {
   name: "Perception & Robotics Group",
-  shortName: "USD PRG",
+  shortName: "PRG",
   university: "University of San Diego",
   department: "Department of Computer Science",
-  // Change this to the address that should receive applications.
+  founded: "2026",
   email: "prg@sandiego.edu",
+  addressLine1: "5998 Alcalá Park",
+  addressLine2: "San Diego, CA 92110",
+  maps: "https://maps.google.com/?q=University+of+San+Diego",
   linkedin: "https://www.linkedin.com/company/usd-prg",
   github: "https://github.com/USD-PRG",
+  youtube: "https://www.youtube.com/@usd-prg",
 };
 
-/* ------------------------------------------------------------ people --- */
-/* `group` accepts: "faculty" | "postdoc" | "phd" | "masters" | "undergrad" | "alumni"
+/* ----------------------------------------------------------- people --- */
+/* `group`: "faculty" | "postdoc" | "phd" | "masters" | "undergrad" | "alumni"
    `avatar` is optional — a URL to a photo. Without one, initials are used.
-   Example:
-   {
-     name: "Jane Doe",
-     role: "Ph.D. Student",
-     group: "phd",
-     focus: "Semantic SLAM for field robots",
-     avatar: "assets/img/people/jane.jpg",
-     links: { email: "jdoe@sandiego.edu", github: "https://github.com/jdoe",
-              scholar: "https://scholar.google.com/", linkedin: "https://linkedin.com/in/jdoe" }
-   },
-*/
-
-const PEOPLE = [];
-
-/* Roles we are actively looking to fill. These render as "open" cards. */
-const OPEN_ROLES = [
+   `featured`: true renders a larger director-style card at the top.
+   Links accepted: email, github, scholar, linkedin, website. */
+const PEOPLE = [
   {
-    role: "Faculty Director",
-    note: "Founding director appointment in progress.",
-  },
-  {
-    role: "Ph.D. & M.S. Researchers",
-    note: "Two funded positions in perception and robot learning.",
-  },
-  {
-    role: "Undergraduate Research Assistants",
-    note: "Paid semester research assistantships for USD undergraduates.",
+    name: "Faculty Director",
+    role: "PI — to be announced",
+    group: "faculty",
+    featured: true,
+    focus:
+      "We are recruiting our founding director. This position will set the research agenda for the group's first cohort.",
   },
 ];
 
-/* ---------------------------------------------------------- research --- */
+/* Roles we are actively looking to fill. These render as "open" cards. */
+const OPEN_ROLES = [
+  { role: "Ph.D. & M.S. Researchers", note: "Funded positions in perception and robot learning." },
+  { role: "Undergraduate Research Assistants", note: "Paid semester research assistantships for USD undergraduates." },
+  { role: "Postdoctoral Researcher", note: "Perception, estimation, and field autonomy." },
+];
+
+/* --------------------------------------------------------- research --- */
 const RESEARCH = [
   {
     id: "slam",
@@ -134,11 +128,35 @@ const RESEARCH = [
   },
 ];
 
+/* ------------------------------------------------------------ tools --- */
+/* The "Tutorials / Software / Datasets" page. `kind` is one of:
+   "tutorial" | "software" | "dataset" | "course". */
+const TOOLS = [
+  {
+    kind: "software",
+    title: "USD PRG toolchain",
+    desc: "Our shared estimation and calibration libraries, released open where possible.",
+    links: { github: "https://github.com/USD-PRG" },
+  },
+  {
+    kind: "tutorial",
+    title: "Probabilistic robotics primer",
+    desc: "A field-first introduction to factor graphs, filters, and uncertainty for new lab members.",
+    links: { github: "https://github.com/USD-PRG" },
+  },
+  {
+    kind: "dataset",
+    title: "Coastal field datasets",
+    desc: "Multi-sensor traversals from our San Diego field campaigns, released with calibration.",
+    links: { github: "https://github.com/USD-PRG" },
+  },
+];
+
 /* ------------------------------------------------------ publications --- */
-/* Example entry — copy, uncomment, and edit:
+/* Example entry — copy, and edit:
 {
   title: "Paper title goes here",
-  authors: ["A. Author", "B. Author", "C. Author"],
+  authors: ["A. Author", "*B. Member"],   // prefix a name with * to highlight it
   venue: "Conference on Robot Learning (CoRL)",
   venueShort: "CoRL",
   year: 2027,
@@ -147,10 +165,82 @@ const RESEARCH = [
   bibtex: "@inproceedings{...}"
 }
 */
-
 const PUBLICATIONS = [];
 
-/* -------------------------------------------------------------- news --- */
+/* -------------------------------------------------------- facilities --- */
+const FACILITIES = [
+  { icon: "drone", title: "Motion-capture flight arena", desc: "Instrumented space for aerial and legged experiments with ground-truth pose." },
+  { icon: "bot", title: "Mobile manipulator platforms", desc: "Wheeled and legged bases with onboard sensing and compute for field work." },
+  { icon: "cube", title: "Perception compute cluster", desc: "Local GPU cluster for training, calibration, and large-scale reconstruction." },
+  { icon: "eye", title: "Sensor & calibration bench", desc: "Lidar, camera, IMU, and event-camera calibration rigs with time-sync tooling." },
+];
+
+/* ---------------------------------------------------------- teaching --- */
+const COURSES = [
+  {
+    code: "COMP 4xx",
+    title: "Introduction to Robotics",
+    term: "Fall",
+    body: "Kinematics, sensing, planning, and control — with a hardware-heavy final project.",
+  },
+  {
+    code: "COMP 4xx",
+    title: "Computer Vision",
+    term: "Spring",
+    body: "Geometry, image formation, multi-view reconstruction, and modern learned perception.",
+  },
+  {
+    code: "COMP 5xx",
+    title: "Robot Perception & Estimation",
+    term: "Spring",
+    body: "Probabilistic state estimation, SLAM, and sensor fusion for autonomous systems.",
+  },
+];
+
+/* ------------------------------------------------------------- media --- */
+const MEDIA = [
+  {
+    outlet: "USD News",
+    title: "New robotics group launches in the Department of Computer Science",
+    date: "November 2026",
+    url: "#",
+  },
+];
+
+/* --------------------------------------------------------- openings --- */
+const OPENINGS = [
+  {
+    title: "Ph.D. & M.S. Researchers",
+    type: "Graduate — funded",
+    body: "Two funded positions in perception, SLAM, and robot learning. Rolling review for Spring 2027.",
+    apply: "apply.html",
+  },
+  {
+    title: "Undergraduate Research Assistants",
+    type: "Undergraduate — paid",
+    body: "Paid semester research assistantships. Roughly 8–12 hours per week during term, full-time in summer.",
+    apply: "apply.html",
+  },
+  {
+    title: "Postdoctoral Researcher",
+    type: "Postdoc — funded",
+    body: "A postdoctoral position in state estimation, perception, and field autonomy.",
+    apply: "apply.html",
+  },
+];
+
+/* ----------------------------------------------------------- seminar --- */
+const SEMINARS = [
+  {
+    date: "Spring 2027",
+    speaker: "TBD",
+    affiliation: "—",
+    title: "Inaugural PRG Seminar",
+    abstract: "The PRG Seminar series launches with the group's first cohort. Speakers and schedule to be announced.",
+  },
+];
+
+/* ------------------------------------------------------------- news --- */
 const NEWS = [
   {
     date: "November 2026",
@@ -163,24 +253,5 @@ const NEWS = [
     title: "Spring 2027 research assistant applications are open",
     body:
       "We are recruiting undergraduate and graduate researchers for perception, SLAM, and aerial autonomy projects. Applications are reviewed on a rolling basis.",
-  },
-];
-
-/* ----------------------------------------------------------- courses --- */
-const COURSES = [
-  {
-    code: "COMP 4xx",
-    title: "Introduction to Robotics",
-    body: "Kinematics, sensing, planning, and control — with a hardware-heavy final project.",
-  },
-  {
-    code: "COMP 4xx",
-    title: "Computer Vision",
-    body: "Geometry, image formation, multi-view reconstruction, and modern learned perception.",
-  },
-  {
-    code: "COMP 5xx",
-    title: "Robot Perception & Estimation",
-    body: "Probabilistic state estimation, SLAM, and sensor fusion for autonomous systems.",
   },
 ];
