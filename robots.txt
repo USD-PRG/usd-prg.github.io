@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://usd-prg.github.io/sitemap.xml
